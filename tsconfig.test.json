@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": [
+    "shared/src/**/*.test.ts",
+    "server/src/**/*.test.ts",
+    "client/src/**/*.test.ts"
+  ]
+}

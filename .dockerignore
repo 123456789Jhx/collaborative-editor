@@ -1,0 +1,25 @@
+# Build context is the repository root, so this file covers both images.
+
+# Never copied in: the image runs `npm ci` to get Linux binaries. The host tree
+# also holds absolute Windows symlinks (node_modules/@collab/* -> /d/demo/*),
+# which would be meaningless inside the container.
+**/node_modules
+
+# Produced inside the image. Copying the host's build output in would let a stale
+# local build shadow the one the image just made.
+**/dist
+**/.vite
+**/*.tsbuildinfo
+coverage
+
+# VCS and local environment
+.git
+.gitignore
+*.log
+.env
+.env.*
+.DS_Store
+
+# Not needed by either build stage
+README.md
+compose.yaml

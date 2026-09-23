@@ -1,0 +1,109 @@
+<!doctype html>
+<!--
+  The literal text below is Chinese because that is the default locale, and it
+  is what shows before the module runs. `applyStaticText` replaces it on boot
+  from the same dictionary, so the two cannot drift.
+-->
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>协同编辑器</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!--
+      Both views start hidden and `#boot` covers the gap. Without it a signed-in
+      user would see the sign-in form flash before `GET /api/me` answers.
+    -->
+    <p id="boot" class="boot" data-i18n="boot.loading">加载中…</p>
+
+    <section id="auth-view" class="auth-view" hidden>
+      <div class="sheet auth-card">
+        <div class="auth-lang">
+          <!--
+            Language names stay in their own language: someone who cannot read
+            the current one still has to be able to find their way out.
+          -->
+          <select class="lang-select" data-lang-select aria-label="Language">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <h2 id="auth-title">登录</h2>
+        <p class="hint" id="auth-subtitle">需要账号才能打开文档。</p>
+
+        <form id="auth-form" novalidate>
+          <label class="field">
+            <span class="field-label" data-i18n="auth.username">用户名</span>
+            <input
+              id="auth-username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              required
+              maxlength="32"
+            />
+          </label>
+
+          <label class="field">
+            <span class="field-label" data-i18n="auth.password">密码</span>
+            <input
+              id="auth-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="200"
+            />
+          </label>
+
+          <p id="auth-error" class="auth-error" role="alert" hidden></p>
+
+          <button id="auth-submit" class="button-primary" type="submit">登录</button>
+        </form>
+
+        <p class="auth-switch">
+          <span id="auth-switch-prompt">还没有账号？</span>
+          <button id="auth-switch" class="link" type="button">去注册</button>
+        </p>
+      </div>
+    </section>
+
+    <div id="app-view" hidden>
+      <header class="topbar">
+        <div class="brand">
+          <span class="dot" aria-hidden="true"></span>
+          <h1 data-i18n="app.title">协同编辑器</h1>
+        </div>
+        <div class="badges">
+          <!--
+            No `data-i18n` on these three: their text is set by the editor
+            component (username, client id, connection state) and a blanket
+            static fill would overwrite the username with "signed out".
+          -->
+          <span id="user" class="badge" data-role="user">未登录</span>
+          <span id="client" class="badge">连接中…</span>
+          <span id="status" class="badge" data-status="connecting">连接中…</span>
+          <select class="lang-select" data-lang-select aria-label="Language">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+          <button id="sign-out" class="link" type="button" data-i18n="app.signOut">退出登录</button>
+        </div>
+      </header>
+
+      <main class="sheet">
+        <p class="hint" data-i18n="app.hint">
+          在第二个标签页或窗口打开本页，就能看到编辑实时同步。
+        </p>
+        <div id="editor" class="editor" aria-label="文档"></div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

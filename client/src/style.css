@@ -1,0 +1,288 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #e3e6ea;
+  --text: #1f2328;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --caret-color: #2563eb;
+  --client-color: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--client-color);
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fafbfc;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#client {
+  border-color: var(--client-color);
+  color: var(--client-color);
+}
+
+#user[data-role="admin"] {
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+  color: #6d28d9;
+}
+
+#status[data-status="open"] {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+#status[data-status="closed"] {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.sheet {
+  max-width: 760px;
+  margin: 32px auto 96px;
+  padding: 40px 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-height: 60vh;
+}
+
+.hint {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.editor {
+  outline: none;
+}
+
+.editor .block {
+  margin: 0 0 2px;
+  padding: 2px 0;
+  outline: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  caret-color: var(--caret-color);
+}
+
+.editor .block:empty::before {
+  content: "";
+  display: inline-block;
+}
+
+.editor .block:focus {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.editor .block[contenteditable="false"] {
+  cursor: default;
+}
+
+.boot {
+  max-width: 760px;
+  margin: 32px auto;
+  padding: 0 48px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------- sign in */
+
+.auth-view {
+  padding: 1px 0 48px;
+}
+
+.auth-card {
+  max-width: 420px;
+  padding: 32px 36px;
+  min-height: 0;
+}
+
+.auth-card h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Sits above the card's heading, out of the way of the sign-in flow. */
+.auth-lang {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.lang-select {
+  /* `font: inherit` first, for the same reason as the text fields below: form
+     controls do not inherit the page font by default. */
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lang-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+}
+
+.field {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.field input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: inherit;
+  /* `font: inherit` first: without it the UA's monospace-ish default for form
+     controls makes the field visibly different from the rest of the page. */
+  font: inherit;
+  font-size: 15px;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+}
+
+.field input:disabled {
+  background: #fafbfc;
+  color: var(--muted);
+}
+
+.button-primary {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.button-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.auth-error {
+  margin: 0 0 16px;
+  padding: 9px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.auth-switch {
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #1d4ed8;
+}
+
+#sign-out {
+  margin-left: 4px;
+}

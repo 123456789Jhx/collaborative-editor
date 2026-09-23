@@ -1,0 +1,60 @@
+# docker compose up --build   ->   http://localhost
+#
+#   browser :80 -> nginx (client) --/ws, /api--> server :3000 --> collab-data
+#
+# Both images build from the repository root as context: npm workspaces need the
+# root manifest, lockfile, and all workspace package.json files.
+#
+# Requires a .env beside this file with ROOT_USERNAME and ROOT_PASSWORD; see
+# .env.example. Those create the first administrator on the initial start only.
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # One replica by design: the document is in-memory and each server instance
+    # would hold its own copy, so scaling out would silently fork the document.
+    deploy:
+      replicas: 1
+    # Not published to the host. `expose` is documentation — what actually keeps
+    # :3000 off the host is the absence of a `ports:` mapping.
+    expose:
+      - "3000"
+    environment:
+      # `:?` rather than `:-`: compose refuses to start and names the missing
+      # variable, instead of the server coming up with no way to create its
+      # administrator. There is deliberately no default credential — this is a
+      # public deployment, and a default admin password is no password.
+      ROOT_USERNAME: ${ROOT_USERNAME:?set ROOT_USERNAME in .env}
+      ROOT_PASSWORD: ${ROOT_PASSWORD:?set ROOT_PASSWORD in .env}
+      COLLAB_DB_PATH: /app/data/collab.db
+    volumes:
+      # Users, sessions and the audit log. Without this the database would live
+      # in the container's writable layer and every `docker compose up --build`
+      # would silently delete every account.
+      - collab-data:/app/data
+    networks:
+      - collab
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    # Needed, not just ordering hygiene: nginx resolves `server` in proxy_pass once
+    # at startup, and fails to boot if the name does not resolve yet.
+    depends_on:
+      - server
+    networks:
+      - collab
+
+volumes:
+  collab-data:
+
+networks:
+  collab:
+    driver: bridge
